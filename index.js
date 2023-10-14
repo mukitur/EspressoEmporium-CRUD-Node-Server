@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
 require('dotenv').config();
 const app = express();
@@ -39,6 +39,14 @@ async function run() {
       console.log(newCoffee);
 
       const result = await coffeeCollection.insertOne(newCoffee);
+      res.send(result);
+    });
+
+    // Delete
+    app.delete('/coffee/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await coffeeCollection.deleteOne(query);
       res.send(result);
     });
 
